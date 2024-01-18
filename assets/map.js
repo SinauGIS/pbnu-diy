@@ -73,6 +73,19 @@ let layer_bahaya_banjir = L.esri.imageMapLayer({
 	attribution: "Bahaya Banjir"
 });
 
+layer_bahaya_banjir.bindPopup(function (error, identifyResults) {
+	if (error || !identifyResults.pixel) {
+		return false;
+	} else {
+		const pixelValue = identifyResults.pixel.properties.value;
+
+		const splitValue = pixelValue.split(",");
+
+		return "Pixel values: " + identifyResults.pixel.properties.value + " (R, G, B)" + console.log(splitValue[1]);
+		// console log
+	}
+});
+
 let layer_bahaya_cuaca_ekstrim = L.esri.imageMapLayer({
 	url: "https://gis.bnpb.go.id/server/rest/services/inarisk/layer_bahaya_cuaca_ekstrim/ImageServer",
 	opacity: 0.75,
@@ -140,7 +153,7 @@ legend.onAdd = function(map) {
 };
 
 legend.update = function() {
-	this._div.innerHTML = `<strong>Indeks Bahaya</strong><br><img src="../assets/images/indeks_bahaya_kerentanan_risiko.png" alt="indeks bahaya" width="150" height="15" class="mt-2"><br><small>Rendah&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tinggi</small>`;
+	this._div.innerHTML = `<strong>Indeks Bahaya</strong><br><img src="../assets/images/legend_indeks_bahaya_kerentanan_risiko_bnpb.png" alt="indeks bahaya" width="150" height="15" class="mt-2"><br><small>Rendah&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tinggi</small>`;
 };
 
 legend.addTo(map);
