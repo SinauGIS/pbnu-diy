@@ -65,3 +65,82 @@ $.getJSON("https://script.google.com/macros/s/AKfycbw7i8CnaNnAGnSPKJeOB6s_Oz5X-B
 	map.addLayer(pointobj);
 	map.fitBounds(pointobj.getBounds());
 });
+
+// Peta Bahaya
+let layer_bahaya_banjir = L.esri.imageMapLayer({
+	url: "https://gis.bnpb.go.id/server/rest/services/inarisk/layer_bahaya_banjir/ImageServer",
+	opacity: 0.75,
+	attribution: "Bahaya Banjir"
+});
+
+let layer_bahaya_cuaca_ekstrim = L.esri.imageMapLayer({
+	url: "https://gis.bnpb.go.id/server/rest/services/inarisk/layer_bahaya_cuaca_ekstrim/ImageServer",
+	opacity: 0.75,
+	attribution: "Bahaya Cuaca Ekstrim"
+});
+
+let layer_bahaya_gempabumi = L.esri.imageMapLayer({
+	url: "https://gis.bnpb.go.id/server/rest/services/inarisk/layer_bahaya_gempabumi/ImageServer",
+	opacity: 0.75,
+	attribution: "Bahaya Gempabumi"
+});
+
+let layer_bahaya_kebakaran_hutan_dan_lahan = L.esri.imageMapLayer({
+	url: "https://gis.bnpb.go.id/server/rest/services/inarisk/layer_bahaya_kebakaran_hutan_dan_lahan/ImageServer",
+	opacity: 0.75,
+	attribution: "Bahaya Banjir"
+});
+
+let layer_bahaya_kekeringan = L.esri.imageMapLayer({
+	url: "https://gis.bnpb.go.id/server/rest/services/inarisk/layer_bahaya_kekeringan/ImageServer",
+	opacity: 0.75,
+	attribution: "Bahaya Banjir"
+});
+
+let layer_bahaya_letusan_gunungapi = L.esri.imageMapLayer({
+	url: "https://gis.bnpb.go.id/server/rest/services/inarisk/layer_bahaya_letusan_gunungapi/ImageServer",
+	opacity: 0.75,
+	attribution: "Bahaya Letusan Gunungapi"
+});
+
+let layer_bahaya_tanah_longsor = L.esri.imageMapLayer({
+	url: "https://gis.bnpb.go.id/server/rest/services/inarisk/layer_bahaya_tanah_longsor/ImageServer",
+	opacity: 0.75,
+	attribution: "Bahaya Tanah Longsor"
+});
+
+let layer_bahaya_multi = L.esri.imageMapLayer({
+	url: "https://gis.bnpb.go.id/server/rest/services/inarisk/layer_bahaya_multi/ImageServer",
+	opacity: 0.75,
+	attribution: "Bahaya Multi"
+});
+
+var overlayMaps = {
+	"Bahaya Banjir": layer_bahaya_banjir,
+	"Bahaya Cuaca Ekstrim": layer_bahaya_cuaca_ekstrim,
+	"Bahaya Gempabumi": layer_bahaya_gempabumi,
+	"Bahaya Kebakaran Hutan dan Lahan": layer_bahaya_kebakaran_hutan_dan_lahan,
+	"Bahaya Kekeringan": layer_bahaya_kekeringan,
+	"Bahaya Letusan Gunungapi": layer_bahaya_letusan_gunungapi,
+	"Bahaya Tanah Longsor": layer_bahaya_tanah_longsor,
+	"Bahaya Multi": layer_bahaya_multi
+};
+
+var layerControl = L.control.layers(null, overlayMaps, {collapsed: false }).addTo(map);
+
+// Control legend
+var legend = L.control({
+	position: 'bottomleft'
+});
+
+legend.onAdd = function(map) {
+	this._div = L.DomUtil.create('div', 'legend');
+	this.update();
+	return this._div;
+};
+
+legend.update = function() {
+	this._div.innerHTML = `<strong>Indeks Bahaya</strong><br><img src="../assets/images/indeks_bahaya_kerentanan_risiko.png" alt="indeks bahaya" width="150" height="15" class="mt-2"><br><small>Rendah&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tinggi</small>`;
+};
+
+legend.addTo(map);
