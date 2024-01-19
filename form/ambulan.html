@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="initial-scale=1,width=device-width">
+	<meta name="mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="description" content="Coordinates Search">
+	<meta name="author" content="unsorry">
+	<link href="https://cdn-icons-png.flaticon.com/512/5088/5088218.png" rel="shortcut icon" type="image/png">
+	<title>Tambah Data Ambulans</title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+	<link rel="stylesheet"
+		href="https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.43.0/L.Control.Locate.css">
+	<style>
+		#map {
+			width: 100%;
+			height: 450px;
+		}
+
+		section {
+			margin-top: 75px;
+		}
+	</style>
+</head>
+
+<body>
+	<nav class="navbar navbar-expand-lg bg-dark bg-body-tertiary fixed-top" data-bs-theme="dark">
+		<div class="container-fluid">
+			<a class="navbar-brand" href="#"><i class="fa-solid fa-circle-plus"></i> Tambah Data Ambulans</a>
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+				aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarNav">
+				<ul class="navbar-nav ms-auto">
+					<li class="nav-item">
+						<a class="nav-link" href="../"><i class="fa-solid fa-map-location-dot"></i> Peta</a>
+					</li>
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+							<i class="fa-solid fa-circle-plus"></i> Tambah Data
+						</a>
+						<ul class="dropdown-menu">
+							<li><a class="dropdown-item" href="pesantren.html"><i class="fa-solid fa-school"></i> Pesantren</a></li>
+							<li><a class="dropdown-item" href="#"><i class="fa-solid fa-mosque"></i> Masjid</a></li>
+							<li><a class="dropdown-item" href="#"><i class="fa-solid fa-house-medical"></i> Klinik</a></li>
+							<li><a class="dropdown-item" href="#"><i class="fa-solid fa-people-group"></i> Relawan</a></li>
+						</ul>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="https://docs.google.com/spreadsheets/d/1lRuCnSGJyRb564ftplfnXcyDPsQCTyP4m9vCOoKOd90/edit?usp=sharing" target="_blank"><i class="fa-solid fa-table"></i> Spreadsheet</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#infoModal" onclick="info()"><i
+								class="fa-solid fa-circle-info"></i> Info</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+
+	<div class="container mt-3 mb-3">
+		<section class="content">
+			<form name="submit-to-google-sheet">
+				<div class="card shadow" id="datalokasiobjek">
+					<div class="card-body">
+						<div class="alert alert-success alert-dismissible fade show d-none my-alert" role="alert">
+							Berhasil menyimpan data.
+							<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+						</div>
+						<div class="row">
+							<input type="hidden" class="form-control" id="jenis_fasilitas" name="jenis_fasilitas" value="Ambulans"
+										required>
+							<div class="col-sm-12 col-md-6 mb-3">
+								<div class="form-group">
+									<label for="nama"><strong>Jenis Ambulans</strong></label>
+									<select name="jenis" id="jenis" class="form-select" required>
+										<option value="">-- Pilih Jenis Ambulans --</option>
+										<option value="Medis">Ambulans Medis</option>
+										<option value="Jenasah">Ambulans Jenasah</option>
+										<option value="Mobilisasi">Ambulans Mobilisasi</option>
+									</select>
+								</div>
+							</div>
+							<div class="col-sm-12 col-md-6">
+								<div class="form-group">
+									<label for="wilayah"><strong>Wilayah</strong></label>
+									<input name="wilayah" id="wilayah" class="form-control" placeholder="Nama wilayah" value="">
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-sm-12 col-md-6 mb-3">
+								<div class="form-group">
+									<label for="driver"><strong>Jumlah Sopir (Driver)</strong></label>
+									<input type="number" class="form-control" id="driver" name="driver" placeholder="0" value="">
+								</div>
+							</div>
+							<div class="col-sm-12 col-md-6 mb-3">
+								<div class="form-group">
+									<label for="medis"><strong>Jumlah Tenaga Medis</strong></label>
+									<input type="number" class="form-control" id="medis" name="medis" placeholder="0"
+										value="">
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-sm-12 col-md-6 mb-3">
+								<div class="form-group">
+									<label for="support"><strong>Jumlah Tenaga Support</strong></label>
+									<input type="number" class="form-control" id="support" name="support" placeholder="0"
+										value="">
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-sm-12 col-md-5 mb-3">
+								<div class="form-group">
+									<label for="latitude"><strong>Lintang</strong></label>
+									<input type="text" class="form-control" id="latitude" name="latitude" placeholder="Latitude" value="">
+								</div>
+							</div>
+							<div class="col-sm-12 col-md-5 mb-3">
+								<div class="form-group">
+									<label for="longitude"><strong>Bujur</strong></label>
+									<input type="text" class="form-control" id="longitude" name="longitude" placeholder="Longitude"
+										value="">
+								</div>
+							</div>
+							<div class="col-sm-12 col-md-2 mb-3">
+								<div class="form-group">
+									<label><strong>&nbsp;</strong></label><br>
+									<div class="d-grid gap-2">
+										<a href="#" type="button" class="btn btn-danger btn-block" id="mapbutton" onclick="mapCenter()"><i class="fa-solid fa-magnifying-glass-location"></i> Cari</a>
+									</div>
+								</div>
+							</div>
+						</div>
+						<hr>
+						<div class="card p-1" id="mapcoordinate">
+							<div id="map"></div>
+						</div>
+					</div>
+					<div class="card-footer py-3">
+						<div class="row">
+							<div class="col">
+								<a href="../index.html" class="btn btn-secondary"><i class="fa-solid fa-circle-arrow-left"></i> Batal</a>
+							</div>
+							<div class="col text-end">
+								<button type="submit" class="btn btn-primary btn-simpan"><i class="fa-solid fa-floppy-disk"></i> Simpan</button>
+								<button class="btn btn-primary btn-loading d-none" type="button" disabled>
+									<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+									Loading...
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</form>
+		</section>
+		<div class="text-center mt-1">
+			<small class="text-center text-muted">Provided by <a href="https://sinaugis.com" target="_blank">SinauGIS</a></small>
+		</div>
+	</div>
+
+	<!-- Modal -->
+	<div class="modal fade" id="infoModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5" id="infoModalLabel"><i class="fa-solid fa-circle-info"></i> Info</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body" id="content-info">
+					...
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-hash/0.2.1/leaflet-hash.min.js"></script>
+	<script
+		src="https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.43.0/L.Control.Locate.min.js"></script>
+	<script src="../assets/ambulan.js"></script>
+	<script src="../assets/info.js"></script>
+</body>
+
+</html>

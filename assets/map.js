@@ -1,8 +1,23 @@
 /* Initial Map */
-var map = L.map('map').setView([-7.7905952, 110.3756905], 13); //lat, long, zoom
+var map = L.map('map').setView([-7.8353231,110.3995514], 12); //lat, long, zoom
 
 // disable attribution
 map.attributionControl.setPrefix(false);
+
+// Awesome Markers
+var pesantrenMarker = L.AwesomeMarkers.icon({
+	icon: 'school',
+	stylePrefix: 'fa-solid',
+	prefix: 'fa',
+	markerColor: 'blue'
+});
+
+var ambulansMarker = L.AwesomeMarkers.icon({
+	icon: 'truck-medical',
+	stylePrefix: 'fa-solid',
+	prefix: 'fa',
+	markerColor: 'red'
+});
 
 /* Tile Basemap */
 var street = L.tileLayer('https://mt0.google.com/vt/lyrs=r&hl=en&x={x}&y={y}&z={z}', {
@@ -35,8 +50,13 @@ map.addControl(L.control.basemaps({
 	tileZ: 1 // tile zoom level
 }));
 
-/* GeoJSON Point */
-var pointobj = L.geoJson(null, {
+/* Pesantren */
+var pesantren = L.geoJson(null, {
+	pointToLayer: function (feature, latlng) {
+		return L.marker(latlng, {
+			icon: pesantrenMarker
+		});
+	},
 	onEachFeature: function (feature, layer) {
 		if (feature.properties) {
 			var content = "<strong class='mb-3'>" + feature.properties.nama + "</strong>" +
@@ -51,19 +71,82 @@ var pointobj = L.geoJson(null, {
 			"<small>" + feature.properties.timestamp + "</small>";
 			layer.on({
 				click: function (e) {
-					pointobj.bindPopup(content);
+					pesantren.bindPopup(content);
 				},
 				mouseover: function (e) {
-					pointobj.bindTooltip(feature.properties.nama);
+					pesantren.bindTooltip(feature.properties.nama);
 				}
 			});
 		}
 	}
 });
 $.getJSON("https://script.google.com/macros/s/AKfycbw7i8CnaNnAGnSPKJeOB6s_Oz5X-BRnLi1vGJyappVg1jtJWx7suW3Jn3G5WbpvGFsN/exec", function (data) {
-	pointobj.addData(data);
-	map.addLayer(pointobj);
-	map.fitBounds(pointobj.getBounds());
+	pesantren.addData(data);
+	map.addLayer(pesantren);
+	// map.fitBounds(pesantren.getBounds());
+});
+
+/* Ambulans */
+var ambulans = L.geoJson(null, {
+	pointToLayer: function (feature, latlng) {
+		return L.marker(latlng, {
+			icon: ambulansMarker
+		});
+	},
+	onEachFeature: function (feature, layer) {
+		if (feature.properties) {
+			var content = "<strong class='mb-3'>" + feature.properties.jenis_fasilitas + " " + feature.properties.jenis + "</strong>" +
+				"<table class='table table-striped table-bordered'>" +
+				"<tr><td>Jumlah Sopir (Driver)</td><td>" + feature.properties.driver + "</td></tr>" +
+				"<tr><td>Jumlah Tenaga Medis</td><td>" + feature.properties.medis + "</td></tr>" +
+				"<tr><td>Jumlah Tenaga Support</td><td>" + feature.properties.support + "</td></tr>" +
+				"</table>"
+			"<small>" + feature.properties.timestamp + "</small>";
+			layer.on({
+				click: function (e) {
+					ambulans.bindPopup(content);
+				},
+				mouseover: function (e) {
+					ambulans.bindTooltip(feature.properties.jenis_fasilitas + " " + feature.properties.jenis);
+				}
+			});
+		}
+	}
+});
+$.getJSON("https://script.google.com/macros/s/AKfycbwZDDkS8_HUu4qXkQHWPNTkS_3lzz42tPV_wC4hzZVQ2Qg02F2klPqbpQpcu5gOi_NO/exec", function (data) {
+	ambulans.addData(data);
+	map.addLayer(ambulans);
+});
+
+// Batas Administrasi
+var batas_kabkot = L.geoJson(null, {
+	/* Style batas_kabkot */
+	style: function (feature) {
+		return {
+			color: "#4d4d4d",
+			fillColor: "#ffffff",
+			weight: 2,
+			opacity: 1,
+			fillOpacity: 0,
+		};
+	},
+	onEachFeature: function (feature, layer) {
+		var popupContent = feature.properties.NAMOBJ;
+		layer.on({
+			click: function (e) {
+				batas_kabkot.bindPopup(popupContent);
+			},
+			mouseover: function (e) {
+				batas_kabkot.bindTooltip(feature.properties.NAMOBJ, {
+					sticky: true,
+				});
+			},
+		});
+	},
+});
+$.getJSON("data/batas_kabkot.geojson", function (data) {
+	batas_kabkot.addData(data);
+	map.addLayer(batas_kabkot);
 });
 
 // Peta Bahaya
@@ -115,18 +198,27 @@ let layer_bahaya_multi = L.esri.imageMapLayer({
 	attribution: "Bahaya Multi"
 });
 
-var overlayMaps = {
-	"Bahaya Banjir": layer_bahaya_banjir,
-	"Bahaya Cuaca Ekstrim": layer_bahaya_cuaca_ekstrim,
-	"Bahaya Gempabumi": layer_bahaya_gempabumi,
-	"Bahaya Kebakaran Hutan dan Lahan": layer_bahaya_kebakaran_hutan_dan_lahan,
-	"Bahaya Kekeringan": layer_bahaya_kekeringan,
-	"Bahaya Letusan Gunungapi": layer_bahaya_letusan_gunungapi,
-	"Bahaya Tanah Longsor": layer_bahaya_tanah_longsor,
-	"Bahaya Multi": layer_bahaya_multi
+var groupedOverlays = {
+  "Aset": {
+    "<i class='fa-solid fa-school'></i> Pesantren": pesantren,
+    "<i class='fa-solid fa-truck-medical'></i> Ambulans": ambulans,
+  },
+	"Batas Administrasi": {
+		"Batas Kabupaten/Kota": batas_kabkot
+	},
+  "Peta Bahaya": {
+    "Bahaya Banjir": layer_bahaya_banjir,
+		"Bahaya Cuaca Ekstrim": layer_bahaya_cuaca_ekstrim,
+		"Bahaya Gempabumi": layer_bahaya_gempabumi,
+		"Bahaya Kebakaran Hutan dan Lahan": layer_bahaya_kebakaran_hutan_dan_lahan,
+		"Bahaya Kekeringan": layer_bahaya_kekeringan,
+		"Bahaya Letusan Gunungapi": layer_bahaya_letusan_gunungapi,
+		"Bahaya Tanah Longsor": layer_bahaya_tanah_longsor,
+		"Bahaya Multi": layer_bahaya_multi
+  }
 };
 
-var layerControl = L.control.layers(null, overlayMaps, {collapsed: false }).addTo(map);
+L.control.groupedLayers(null, groupedOverlays, {collapsed: false}).addTo(map);
 
 // Control legend
 var legend = L.control({
@@ -140,7 +232,7 @@ legend.onAdd = function(map) {
 };
 
 legend.update = function() {
-	this._div.innerHTML = `<strong>Indeks Bahaya</strong><br><img src="../assets/images/legend_indeks_bahaya_kerentanan_risiko_bnpb.png" alt="indeks bahaya" width="150" height="15" class="mt-2"><br><small>Rendah&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tinggi</small>`;
+	this._div.innerHTML = `<strong>Indeks Bahaya</strong><br><img src="assets/images/legend_indeks_bahaya_kerentanan_risiko_bnpb.png" alt="indeks bahaya" width="150" height="15" class="mt-2"><br><small>Rendah&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tinggi</small>`;
 };
 
 legend.addTo(map);
