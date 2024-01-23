@@ -80,7 +80,7 @@ var pesantren = L.geoJson(null, {
 		}
 	}
 });
-$.getJSON("https://script.google.com/macros/s/AKfycbw7i8CnaNnAGnSPKJeOB6s_Oz5X-BRnLi1vGJyappVg1jtJWx7suW3Jn3G5WbpvGFsN/exec", function (data) {
+$.getJSON("https://script.google.com/macros/s/AKfycbwOMrC5nXLvJxbB3KHy1AWaUzBBOP5F91j3opUILWkDXJGbD1DBMkfFzmVICzuIWZ-pCw/exec", function (data) {
 	pesantren.addData(data);
 	map.addLayer(pesantren);
 	// map.fitBounds(pesantren.getBounds());
@@ -113,7 +113,7 @@ var ambulans = L.geoJson(null, {
 		}
 	}
 });
-$.getJSON("https://script.google.com/macros/s/AKfycbwZDDkS8_HUu4qXkQHWPNTkS_3lzz42tPV_wC4hzZVQ2Qg02F2klPqbpQpcu5gOi_NO/exec", function (data) {
+$.getJSON("https://script.google.com/macros/s/AKfycbxOALGPxCrkbyQsEH7lvi-yZjZwAV4hCX8U3X6WAol0lb93E2vZzQXWURL-rnDrJ9Q/exec", function (data) {
 	ambulans.addData(data);
 	map.addLayer(ambulans);
 });

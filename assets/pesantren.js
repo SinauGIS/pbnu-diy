@@ -98,7 +98,7 @@ var locateControl = L.control
   .addTo(map);
 
 // Submit to google spreadsheet
-const scriptURL = 'https://script.google.com/macros/s/AKfycbwF_JerbrGkzHeKX59erOeS8RQ2OK9XsJpsD3j7cbxaW3GYTInRHAVO3qXdoR7o0sgr/exec';
+const scriptURL = 'https://script.google.com/macros/s/AKfycbx3VJER_FlaC3FYVXAIyjfMc5VKSXF7uSKMNYnEkDq-g0o21BrOZ3PfcUKECw39cT18Vw/exec';
 const form = document.forms['submit-to-google-sheet'];
 const btnSimpan = document.querySelector('.btn-simpan');
 const btnLoading = document.querySelector('.btn-loading');
