@@ -152,8 +152,9 @@ var ambulans = L.geoJson(null, {
 	},
 	onEachFeature: function (feature, layer) {
 		if (feature.properties) {
-			var content = "<strong class='mb-3'>" + feature.properties.jenis_fasilitas + " " + feature.properties.jenis + "</strong>" +
+			var content = "<strong class='mb-3'>" + feature.properties.nama_ambulans + "</strong>" +
 				"<table class='table table-striped table-bordered'>" +
+				"<tr><td>Jenis</td><td>" + feature.properties.jenis + "</td></tr>" +
 				"<tr><td>Jumlah Sopir (Driver)</td><td>" + feature.properties.driver + "</td></tr>" +
 				"<tr><td>Jumlah Tenaga Medis</td><td>" + feature.properties.medis + "</td></tr>" +
 				"<tr><td>Jumlah Tenaga Support</td><td>" + feature.properties.support + "</td></tr>" +
@@ -164,7 +165,7 @@ var ambulans = L.geoJson(null, {
 					ambulans.bindPopup(content);
 				},
 				mouseover: function (e) {
-					ambulans.bindTooltip(feature.properties.jenis_fasilitas + " " + feature.properties.jenis);
+					ambulans.bindTooltip(feature.properties.nama_ambulans);
 				}
 			});
 		}
