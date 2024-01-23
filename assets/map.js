@@ -9,7 +9,7 @@ var pesantrenMarker = L.AwesomeMarkers.icon({
 	icon: 'school',
 	stylePrefix: 'fa-solid',
 	prefix: 'fa',
-	markerColor: 'green'
+	markerColor: 'purple'
 });
 
 var sekolahMarker = L.AwesomeMarkers.icon({
@@ -24,6 +24,13 @@ var ambulansMarker = L.AwesomeMarkers.icon({
 	stylePrefix: 'fa-solid',
 	prefix: 'fa',
 	markerColor: 'red'
+});
+
+var klinikMarker = L.AwesomeMarkers.icon({
+	icon: 'briefcase-medical',
+	stylePrefix: 'fa-solid',
+	prefix: 'fa',
+	markerColor: 'green'
 });
 
 /* Tile Basemap */
@@ -161,6 +168,43 @@ $.getJSON("https://script.google.com/macros/s/AKfycbxOALGPxCrkbyQsEH7lvi-yZjZwAV
 	map.addLayer(ambulans);
 });
 
+/* Klinik */
+var klinik = L.geoJson(null, {
+	pointToLayer: function (feature, latlng) {
+		return L.marker(latlng, {
+			icon: klinikMarker
+		});
+	},
+	onEachFeature: function (feature, layer) {
+		if (feature.properties) {
+			var content = "<strong class='mb-3'>" + feature.properties.nama + "</strong>" +
+				"<table class='table table-striped table-bordered'>" +
+				"<tr><td>Jenis</td><td>" + feature.properties.jenis_fasilitas + "</td></tr>" +
+				"<tr><td>Deskripsi</td><td>" + feature.properties.deskripsi + "</td></tr>" +
+				"<tr><td>Jumlah Dokter Umum</td><td>" + feature.properties.dokter_umum + "</td></tr>" +
+				"<tr><td>Jumlah Dokter Spesialis</td><td>" + feature.properties.dokter_spesialis + "</td></tr>" +
+				"<tr><td>Jumlah Paramedis</td><td>" + feature.properties.paramedis + "</td></tr>" +
+				"<tr><td>Jumlah Perawat</td><td>" + feature.properties.perawat + "</td></tr>" +
+				"<tr><td>Jumlah Ruang Rawat Inap</td><td>" + feature.properties.ruang_rawat_inap + "</td></tr>" +
+				"<tr><td>Jumlah Ambulans</td><td>" + feature.properties.ambulance + "</td></tr>" +
+				"</table>"
+			"<small>" + feature.properties.timestamp + "</small>";
+			layer.on({
+				click: function (e) {
+					klinik.bindPopup(content);
+				},
+				mouseover: function (e) {
+					klinik.bindTooltip(feature.properties.nama);
+				}
+			});
+		}
+	}
+});
+$.getJSON("https://script.google.com/macros/s/AKfycbxUx339aURq8lWT73RWG450FlXgIkwl3YA7zbZO25uGyIbRSJWkuvViJNodcZN9cfKs/exec", function (data) {
+	klinik.addData(data);
+	map.addLayer(klinik);
+});
+
 // Batas Administrasi
 var batas_kabkot = L.geoJson(null, {
 	/* Style batas_kabkot */
@@ -245,6 +289,7 @@ var groupedOverlays = {
   "Aset": {
     "<i class='fa-solid fa-school'></i> Pesantren": pesantren,
     "<i class='fa-solid fa-school-flag'></i> Sekolah/Madrasah": sekolah,
+    "<i class='fa-solid fa-briefcase-medical'></i> Klinik": klinik,
     "<i class='fa-solid fa-truck-medical'></i> Ambulans": ambulans,
   },
 	"Batas Administrasi": {
