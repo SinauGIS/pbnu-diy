@@ -9,6 +9,13 @@ var pesantrenMarker = L.AwesomeMarkers.icon({
 	icon: 'school',
 	stylePrefix: 'fa-solid',
 	prefix: 'fa',
+	markerColor: 'green'
+});
+
+var sekolahMarker = L.AwesomeMarkers.icon({
+	icon: 'school-flag',
+	stylePrefix: 'fa-solid',
+	prefix: 'fa',
 	markerColor: 'blue'
 });
 
@@ -84,6 +91,42 @@ $.getJSON("https://script.google.com/macros/s/AKfycbwOMrC5nXLvJxbB3KHy1AWaUzBBOP
 	pesantren.addData(data);
 	map.addLayer(pesantren);
 	// map.fitBounds(pesantren.getBounds());
+});
+
+/* Sekolah/Madrasah */
+var sekolah = L.geoJson(null, {
+	pointToLayer: function (feature, latlng) {
+		return L.marker(latlng, {
+			icon: sekolahMarker
+		});
+	},
+	onEachFeature: function (feature, layer) {
+		if (feature.properties) {
+			var content = "<strong class='mb-3'>" + feature.properties.nama + "</strong>" +
+				"<table class='table table-striped table-bordered'>" +
+				"<tr><td>Jenis</td><td>" + feature.properties.jenis + "</td></tr>" +
+				"<tr><td>Deskripsi</td><td>" + feature.properties.deskripsi + "</td></tr>" +
+				"<tr><td>Jumlah Guru Laki-laki</td><td>" + feature.properties.guru_laki + "</td></tr>" +
+				"<tr><td>Jumlah Guru Perempuan</td><td>" + feature.properties.guru_perempuan + "</td></tr>" +
+				"<tr><td>Jumlah Santri Laki-laki</td><td>" + feature.properties.santri_laki + "</td></tr>" +
+				"<tr><td>Jumlah Santri Perempuan</td><td>" + feature.properties.santri_perempuan + "</td></tr>" +
+				"</table>"
+			"<small>" + feature.properties.timestamp + "</small>";
+			layer.on({
+				click: function (e) {
+					sekolah.bindPopup(content);
+				},
+				mouseover: function (e) {
+					sekolah.bindTooltip(feature.properties.nama);
+				}
+			});
+		}
+	}
+});
+$.getJSON("https://script.google.com/macros/s/AKfycbyU6B4mhk3vHnGZSkfKnJsgNyRrJXsDcUJLqJuntbjNNob9bNGdKW8JiOJ6-MobmNMs/exec", function (data) {
+	sekolah.addData(data);
+	map.addLayer(sekolah);
+	// map.fitBounds(sekolah.getBounds());
 });
 
 /* Ambulans */
@@ -201,6 +244,7 @@ let layer_bahaya_multi = L.esri.imageMapLayer({
 var groupedOverlays = {
   "Aset": {
     "<i class='fa-solid fa-school'></i> Pesantren": pesantren,
+    "<i class='fa-solid fa-school-flag'></i> Sekolah/Madrasah": sekolah,
     "<i class='fa-solid fa-truck-medical'></i> Ambulans": ambulans,
   },
 	"Batas Administrasi": {
