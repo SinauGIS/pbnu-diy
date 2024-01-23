@@ -61,7 +61,7 @@ var pesantren = L.geoJson(null, {
 		if (feature.properties) {
 			var content = "<strong class='mb-3'>" + feature.properties.nama + "</strong>" +
 				"<table class='table table-striped table-bordered'>" +
-				"<tr><td>Jenis Fasilitas</td><td>" + feature.properties.jenis_fasilitas + "</td></tr>" +
+				"<tr><td>Jenis</td><td>" + feature.properties.jenis + "</td></tr>" +
 				"<tr><td>Deskripsi</td><td>" + feature.properties.deskripsi + "</td></tr>" +
 				"<tr><td>Jumlah Guru Laki-laki</td><td>" + feature.properties.guru_laki + "</td></tr>" +
 				"<tr><td>Jumlah Guru Perempuan</td><td>" + feature.properties.guru_perempuan + "</td></tr>" +
