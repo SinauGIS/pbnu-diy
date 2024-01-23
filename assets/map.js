@@ -33,6 +33,13 @@ var klinikMarker = L.AwesomeMarkers.icon({
 	markerColor: 'green'
 });
 
+/* Larger screens get expanded layer control and visible sidebar */
+if (document.body.clientWidth <= 767) {
+  var isCollapsed = true;
+} else {
+  var isCollapsed = false;
+}
+
 /* Tile Basemap */
 var street = L.tileLayer('https://mt0.google.com/vt/lyrs=r&hl=en&x={x}&y={y}&z={z}', {
 	maxZoom: 20,
@@ -307,7 +314,7 @@ var groupedOverlays = {
   }
 };
 
-L.control.groupedLayers(null, groupedOverlays, {collapsed: false}).addTo(map);
+L.control.groupedLayers(null, groupedOverlays, {collapsed: isCollapsed}).addTo(map);
 
 // Control legend
 var legend = L.control({
