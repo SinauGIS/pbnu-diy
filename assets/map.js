@@ -33,6 +33,20 @@ var klinikMarker = L.AwesomeMarkers.icon({
 	markerColor: 'green'
 });
 
+var masjidMarker = L.AwesomeMarkers.icon({
+	icon: 'mosque',
+	stylePrefix: 'fa-solid',
+	prefix: 'fa',
+	markerColor: 'darkgreen'
+});
+
+var relawanMarker = L.AwesomeMarkers.icon({
+	icon: 'people-group',
+	stylePrefix: 'fa-solid',
+	prefix: 'fa',
+	markerColor: 'orange'
+});
+
 /* Larger screens get expanded layer control and visible sidebar */
 if (document.body.clientWidth <= 767) {
   var isCollapsed = true;
@@ -213,6 +227,76 @@ $.getJSON("https://script.google.com/macros/s/AKfycbxUx339aURq8lWT73RWG450FlXgIk
 	map.addLayer(klinik);
 });
 
+/* Masjid */
+var masjid = L.geoJson(null, {
+	pointToLayer: function (feature, latlng) {
+		return L.marker(latlng, {
+			icon: masjidMarker
+		});
+	},
+	onEachFeature: function (feature, layer) {
+		if (feature.properties) {
+			var content = "<strong class='mb-3'>" + feature.properties.nama + "</strong>" +
+				"<table class='table table-striped table-bordered'>" +
+				"<tr><td>Jenis</td><td>" + feature.properties.jenis_fasilitas + "</td></tr>" +
+				"<tr><td>Alamat</td><td>" + feature.properties.alamat + "</td></tr>" +
+				"<tr><td>Nama Takmir</td><td>" + feature.properties.nama_takmir + "</td></tr>" +
+				"<tr><td>Kontak</td><td>" + feature.properties.kontak + "</td></tr>" +
+				"<tr><td>Jumlah Jamaah Laki-laki</td><td>" + feature.properties.jamaah_laki + "</td></tr>" +
+				"<tr><td>Jumlah Jamaah Perempuan</td><td>" + feature.properties.jamaah_perempuan + "</td></tr>" +
+				"</table>"
+			"<small>" + feature.properties.timestamp + "</small>";
+			layer.on({
+				click: function (e) {
+					masjid.bindPopup(content);
+				},
+				mouseover: function (e) {
+					masjid.bindTooltip(feature.properties.nama);
+				}
+			});
+		}
+	}
+});
+$.getJSON("https://script.google.com/macros/s/AKfycbyzbwJHhMWotCKM1qdIOFkeSeN2yEW0aDWICSLO5IVUIAylLC-jtrJ-hHt4-jocxY0daw/exec", function (data) {
+	masjid.addData(data);
+	map.addLayer(masjid);
+});
+
+/* Relawan */
+var relawan = L.geoJson(null, {
+	pointToLayer: function (feature, latlng) {
+		return L.marker(latlng, {
+			icon: relawanMarker
+		});
+	},
+	onEachFeature: function (feature, layer) {
+		if (feature.properties) {
+			var content = "<strong class='mb-3'>" + feature.properties.nama + "</strong>" +
+				"<table class='table table-striped table-bordered'>" +
+				"<tr><td>Jenis Kelamin</td><td>" + feature.properties.jenis_kelamin + "</td></tr>" +
+				"<tr><td>Alamat</td><td>" + feature.properties.alamat + "</td></tr>" +
+				"<tr><td>Kontak</td><td>" + feature.properties.kontak + "</td></tr>" +
+				"<tr><td>Keahlian</td><td>" + feature.properties.keahlian + "</td></tr>" +
+				"<tr><td>Disabilitas</td><td>" + feature.properties.disabilitas + "</td></tr>" +
+				"<tr><td>Peralatan Yang Dimiliki</td><td>" + feature.properties.peralatan_dimiliki + "</td></tr>" +
+				"</table>"
+			"<small>" + feature.properties.timestamp + "</small>";
+			layer.on({
+				click: function (e) {
+					relawan.bindPopup(content);
+				},
+				mouseover: function (e) {
+					relawan.bindTooltip(feature.properties.nama);
+				}
+			});
+		}
+	}
+});
+$.getJSON("https://script.google.com/macros/s/AKfycbxzpobRSJ-lMNy_viz5GDTQwSKqW8ICzfxQR4r2ku_KH0yNxFXUVRUucKkMgd5XznjE5A/exec", function (data) {
+	relawan.addData(data);
+	map.addLayer(relawan);
+});
+
 // Batas Administrasi
 var batas_kabkot = L.geoJson(null, {
 	/* Style batas_kabkot */
@@ -299,6 +383,8 @@ var groupedOverlays = {
     "<i class='fa-solid fa-school-flag'></i> Sekolah/Madrasah": sekolah,
     "<i class='fa-solid fa-briefcase-medical'></i> Klinik": klinik,
     "<i class='fa-solid fa-truck-medical'></i> Ambulans": ambulans,
+    "<i class='fa-solid fa-mosque'></i> Masjid": masjid,
+    "<i class='fa-solid fa-people-group'></i> Relawan": relawan,
   },
 	"Batas Administrasi": {
 		"Batas Kabupaten/Kota": batas_kabkot

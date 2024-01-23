@@ -85,8 +85,12 @@
 							<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 						</div>
 						<div class="row">
-							<input type="hidden" class="form-control" id="jenis_fasilitas" name="jenis_fasilitas" value="Ambulans"
-										required>
+							<div class="col-sm-12 col-md-6">
+								<div class="form-group">
+									<label for="nama_ambulans"><strong>Nama Ambulans</strong></label>
+									<input name="nama_ambulans" id="nama_ambulans" class="form-control" placeholder="Nama ambulans" value="">
+								</div>
+							</div>
 							<div class="col-sm-12 col-md-6 mb-3">
 								<div class="form-group">
 									<label for="nama"><strong>Jenis Ambulans</strong></label>
@@ -98,20 +102,22 @@
 									</select>
 								</div>
 							</div>
+						</div>
+						<div class="row">
 							<div class="col-sm-12 col-md-6">
 								<div class="form-group">
 									<label for="wilayah"><strong>Wilayah</strong></label>
 									<input name="wilayah" id="wilayah" class="form-control" placeholder="Nama wilayah" value="">
 								</div>
 							</div>
-						</div>
-						<div class="row">
 							<div class="col-sm-12 col-md-6 mb-3">
 								<div class="form-group">
 									<label for="driver"><strong>Jumlah Sopir (Driver)</strong></label>
 									<input type="number" class="form-control" id="driver" name="driver" placeholder="0" value="">
 								</div>
 							</div>
+						</div>
+						<div class="row">
 							<div class="col-sm-12 col-md-6 mb-3">
 								<div class="form-group">
 									<label for="medis"><strong>Jumlah Tenaga Medis</strong></label>
@@ -119,8 +125,6 @@
 										value="">
 								</div>
 							</div>
-						</div>
-						<div class="row">
 							<div class="col-sm-12 col-md-6 mb-3">
 								<div class="form-group">
 									<label for="support"><strong>Jumlah Tenaga Support</strong></label>
