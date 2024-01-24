@@ -10,7 +10,7 @@
 	<meta name="description" content="Coordinates Search">
 	<meta name="author" content="unsorry">
 	<link href="https://cdn-icons-png.flaticon.com/512/5088/5088218.png" rel="shortcut icon" type="image/png">
-	<title>Tambah Data Ambulans</title>
+	<title>Tambah Data Relawan</title>
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
@@ -32,7 +32,7 @@
 <body>
 	<nav class="navbar navbar-expand-lg bg-dark bg-body-tertiary fixed-top" data-bs-theme="dark">
 		<div class="container-fluid">
-			<a class="navbar-brand" href="#"><i class="fa-solid fa-circle-plus"></i> Tambah Data Ambulans</a>
+			<a class="navbar-brand" href="#"><i class="fa-solid fa-circle-plus"></i> Tambah Data Relawan</a>
 			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
 				aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
@@ -87,54 +87,67 @@
 							<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 						</div>
 						<div class="row">
-							<div class="col-sm-12 col-md-6">
+							<div class="col-sm-12 col-md-6 mb-3">
 								<div class="form-group">
-									<label for="nama_ambulans"><strong>Nama Ambulans</strong></label>
-									<input name="nama_ambulans" id="nama_ambulans" class="form-control" placeholder="Nama ambulans" value="" required>
+									<label for="nama_relawan"><strong>Nama</strong></label>
+									<input type="text" class="form-control" id="nama_relawan" name="nama_relawan" placeholder="Nama relawan" value=""
+										required>
 								</div>
 							</div>
 							<div class="col-sm-12 col-md-6 mb-3">
 								<div class="form-group">
-									<label for="nama"><strong>Jenis Ambulans</strong></label>
-									<select name="jenis" id="jenis" class="form-select" required>
-										<option value="">-- Pilih Jenis Ambulans --</option>
-										<option value="Medis">Ambulans Medis</option>
-										<option value="Jenasah">Ambulans Jenasah</option>
-										<option value="Mobilisasi">Ambulans Mobilisasi</option>
+									<label for="jenis_kelamin"><strong>Jenis Kelamin</strong></label>
+									<select name="jenis_kelamin" id="jenis_kelamin" class="form-select" required>
+										<option value="">-- Pilih Jenis Kelamin --</option>
+										<option value="Laki-laki">Laki-laki</option>
+										<option value="Perempuan">Perempuan</option>
 									</select>
 								</div>
 							</div>
 						</div>
-						<div class="row">
-							<div class="col-sm-12 col-md-6">
+						<div class="row mb-3">
+							<div class="col-sm-12 mb-3">
 								<div class="form-group">
-									<label for="wilayah"><strong>Wilayah</strong></label>
-									<input name="wilayah" id="wilayah" class="form-control" placeholder="Nama wilayah" value="" required>
-								</div>
-							</div>
-							<div class="col-sm-12 col-md-6 mb-3">
-								<div class="form-group">
-									<label for="driver"><strong>Jumlah Sopir (Driver)</strong></label>
-									<input type="number" class="form-control" id="driver" name="driver" placeholder="0" value="">
+									<label for="alamat"><strong>Alamat</strong></label>
+									<textarea name="alamat" id="alamat" cols="30" rows="3" class="form-control"></textarea>
 								</div>
 							</div>
 						</div>
 						<div class="row">
 							<div class="col-sm-12 col-md-6 mb-3">
 								<div class="form-group">
-									<label for="medis"><strong>Jumlah Tenaga Medis</strong></label>
-									<input type="number" class="form-control" id="medis" name="medis" placeholder="0"
-										value="">
+									<label for="kontak"><strong>Kontak</strong></label>
+									<input type="text" class="form-control" id="kontak" name="kontak" placeholder="Kontak relawan" value="">
 								</div>
 							</div>
 							<div class="col-sm-12 col-md-6 mb-3">
 								<div class="form-group">
-									<label for="support"><strong>Jumlah Tenaga Support</strong></label>
-									<input type="number" class="form-control" id="support" name="support" placeholder="0"
+									<label for="keahlian"><strong>Keahlian</strong></label>
+									<input type="text" class="form-control" id="keahlian" name="keahlian" placeholder="Keahlian"
+										value="" required>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-sm-12 col-md-6 mb-3">
+								<div class="form-group">
+									<label for="disabilitas"><strong>Disabilitas</strong></label>
+									<select name="disabilitas" id="disabilitas" class="form-select" required>
+										<option value="">-- Pilih Disabilitas --</option>
+										<option value="Ya">Ya</option>
+										<option value="Tidak">Tidak</option>
+									</select>
+								</div>
+							</div>
+							<div class="col-sm-12 col-md-6 mb-3">
+								<div class="form-group">
+									<label for="peralatan_dimiliki"><strong>Peralatan yang dimiliki</strong></label>
+									<input type="text" class="form-control" id="peralatan_dimiliki" name="peralatan_dimiliki" placeholder="Peralatan yang dimiliki"
 										value="">
 								</div>
 							</div>
 						</div>
+						
 						<div class="row">
 							<div class="col-sm-12 col-md-5 mb-3">
 								<div class="form-group">
@@ -211,7 +224,7 @@
 	<script
 		src="https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.43.0/L.Control.Locate.min.js"></script>
 	<script src="../assets/map-form.js"></script>
-	<script src="../assets/ambulan.js"></script>
+	<script src="../assets/relawan.js"></script>
 	<script src="../assets/info.js"></script>
 </body>
 

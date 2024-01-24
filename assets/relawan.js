@@ -1,5 +1,5 @@
 // Submit to google spreadsheet
-const scriptURL = 'https://script.google.com/macros/s/AKfycbx3VJER_FlaC3FYVXAIyjfMc5VKSXF7uSKMNYnEkDq-g0o21BrOZ3PfcUKECw39cT18Vw/exec';
+const scriptURL = 'https://script.google.com/macros/s/AKfycbynOboDRTw67fw39TgF1gTMGbSS9rt9xIcmzQ2pWzo34XmlQdV-iAJ5tYpVhXcd5qpeyA/exec';
 const form = document.forms['submit-to-google-sheet'];
 const btnSimpan = document.querySelector('.btn-simpan');
 const btnLoading = document.querySelector('.btn-loading');
