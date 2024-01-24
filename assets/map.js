@@ -326,6 +326,7 @@ var batas_kabkot = L.geoJson(null, {
 $.getJSON("data/batas_kabkot.geojson", function (data) {
 	batas_kabkot.addData(data);
 	map.addLayer(batas_kabkot);
+	map.fitBounds(batas_kabkot.getBounds());
 });
 
 // Peta Bahaya
